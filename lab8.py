@@ -22,21 +22,29 @@ def calculate_minimum():
                 min_sum = sum_mod
                 min_combination = combination
 
-    result_label.config(text="Минимальное значение: {}\nНабор переменных, при котором достигается минимум: {}".format(min_sum, min_combination))
+    result_root = tk.Toplevel(root)
+    result_root.title("Результаты")
+    result_root.geometry("400x300")
 
+    result_text = tk.Text(result_root, height=20, width=60)
+    result_text.pack()
+
+    result_text.insert(tk.END, f"Минимальная сумма: {min_sum}\n"
+                               f"Комбинация переменных: {min_combination}\n")
+
+
+# Создание графического интерфейса
 root = tk.Tk()
-root.title("Расчет минимума")
+root.title("Вычисление минимума")
+root.geometry("400x300")
 
-label = tk.Label(root, text="Введите значение n:")
-label.pack()
+entry_label = tk.Label(root, text="Введите число:")
+entry_label.pack()
 
 entry = tk.Entry(root)
 entry.pack()
 
-button = tk.Button(root, text="Рассчитать", command=calculate_minimum)
-button.pack()
-
-result_label = tk.Label(root, text="")
-result_label.pack()
+calculate_button = tk.Button(root, text="Вычислить", command=calculate_minimum)
+calculate_button.pack()
 
 root.mainloop()
