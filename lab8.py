@@ -2,24 +2,20 @@ import tkinter as tk
 
 def calculate_minimum():
     n = int(entry.get())
-    K = []
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                for l in range(n):
-                    K.append([i, j, k, l])
 
     min_sum = float('inf')
     min_combination = None
     count_combinations = 0
 
-    for combination in K:
-        if all(x % 2 == 1 for x in combination[::2]) and all(x % 2 == 0 for x in combination[1::2]):
-            sum_mod = sum(abs(x) for x in combination) % 6
-            if sum_mod < min_sum:
-                min_sum = sum_mod
-                min_combination = combination
-            count_combinations += 1
+    for i in range(1, n, 2):
+        for j in range(0, n, 2):
+            for k in range(1, n, 2):
+                for l in range(0, n, 2):
+                    sum_mod = (i + k + j + l) % 6
+                    if sum_mod < min_sum:
+                        min_sum = sum_mod
+                        min_combination = [i, j, k, l]
+                    count_combinations += 1
 
     # Закрытие предыдущего окна результатов (если оно было)
     if hasattr(calculate_minimum, 'result_root') and calculate_minimum.result_root.winfo_exists():
@@ -27,7 +23,7 @@ def calculate_minimum():
 
     # Создание нового окна результатов
     result_root = tk.Toplevel(root)
-    calculate_minimum.result_root = result_root # Сохраняем ссылку на окно результатов
+    calculate_minimum.result_root = result_root  # Сохраняем ссылку на окно результатов
     result_root.title("Результаты")
     result_root.geometry("400x300")
 
@@ -43,8 +39,7 @@ root = tk.Tk()
 root.title("Вычисление минимума")
 root.geometry("400x300")
 
-entry_label = tk.Label(root, text="Введите число n, "
-                                  "количество переменных:")
+entry_label = tk.Label(root, text="Введите число n > 1, количество переменных:")
 entry_label.pack()
 
 entry = tk.Entry(root)
@@ -52,5 +47,15 @@ entry.pack()
 
 calculate_button = tk.Button(root, text="Вычислить", command=calculate_minimum)
 calculate_button.pack()
+
+window_width = 400
+window_height = 300
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+x = int((screen_width/2) - (window_width/2))
+y = int((screen_height/2) - (window_height/2))
+root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 root.mainloop()
